@@ -61,7 +61,7 @@ def main(argv: list[str] | None = None) -> int:
         if not os.path.isfile(output_path):
             print(f"FAIL: {filename} does not exist. Run: python -m scripts.export_openapi")
             return 1
-        with open(output_path) as f:
+        with open(output_path, encoding="utf-8") as f:
             committed = f.read()
         if committed != generated:
             print(
@@ -72,7 +72,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"OK: {filename} matches the generated OpenAPI document.")
         return 0
 
-    with open(output_path, "w") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(generated)
     print(f"Wrote {filename}")
     return 0

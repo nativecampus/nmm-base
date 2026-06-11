@@ -6,7 +6,10 @@ export default function App() {
   useEffect(() => {
     fetch("/api/")
       .then((res) => setStatus(`API responded: ${res.status}`))
-      .catch(() => setStatus("API unreachable — start the mock server with `npm run mock`"));
+      .catch((err) => {
+        const detail = err instanceof Error ? err.message : "unknown error";
+        setStatus(`API request failed: ${detail}. If the API isn't running yet, start the mock with \`npm run mock\`.`);
+      });
   }, []);
 
   return (
