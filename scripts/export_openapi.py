@@ -66,7 +66,7 @@ def main(argv: list[str] | None = None) -> int:
         if committed != generated:
             print(
                 f"FAIL: {filename} is out of date. "
-                f"Regenerate with: python -m scripts.export_openapi"
+                "Regenerate with: python -m scripts.export_openapi"
             )
             return 1
         print(f"OK: {filename} matches the generated OpenAPI document.")

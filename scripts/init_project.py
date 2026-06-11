@@ -188,10 +188,10 @@ def run(name: str) -> None:
 
     print()
     print("Done. Next steps:")
-    print(f"  1. pipenv install --dev")
+    print("  1. pipenv install --dev")
     print(f"  2. pipenv run python -m scripts.export_openapi   # regenerate {names['kebab']}.openapi.json")
-    print(f"  3. pipenv run alembic upgrade head")
-    print(f"  4. Add your models, then: pipenv run alembic revision --autogenerate -m 'initial tables'")
+    print("  3. pipenv run alembic upgrade head")
+    print("  4. Add your models, then: pipenv run alembic revision --autogenerate -m 'initial tables'")
 
 
 def main():
