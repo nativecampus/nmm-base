@@ -11,6 +11,10 @@ Single-page applications that consume this repo's JSON API live under
   database directly.
 - The TypeScript client is generated from `<api-name>.openapi.json` at the repo
   root, not hand-written. This keeps the client in lockstep with the API surface.
+- The default component library is `nmm-ui` (`docs/nmm-ui.md`); the template
+  pre-wires it and wraps the app in `NmmProvider`. `native-ui`
+  (`docs/native-ui.md`) is the per-project alternative. SPAs compose the
+  library's exports rather than inventing their own primitives.
 - During development a Prism mock server stands in for the real API, so the SPA
   can be built against the contract before the endpoints exist.
 

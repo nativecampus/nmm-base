@@ -180,12 +180,15 @@ def run(name: str) -> None:
     reset_docs(_REPO_ROOT, names)
 
     print()
-    print(f"Create databases now? (createdb {names['snake']} && createdb -U test {names['snake']}_test)")
-    answer = input("[Y/n] ").strip().lower()
-    if answer in ("", "y", "yes"):
-        create_databases(names["snake"])
+    if not sys.stdin.isatty():
+        print("  Non-interactive: skipping database creation. Run `python manage.py setup` when ready.")
     else:
-        print("  Skipped. Create them manually when ready.")
+        print(f"Create databases now? (createdb {names['snake']} && createdb -U test {names['snake']}_test)")
+        answer = input("[Y/n] ").strip().lower()
+        if answer in ("", "y", "yes"):
+            create_databases(names["snake"])
+        else:
+            print("  Skipped. Create them manually when ready.")
 
     print()
     print("Done. Next steps:")

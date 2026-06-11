@@ -9,6 +9,17 @@
 - docs/coding_standards.md — patterns and conventions for coding agents
 - docs/testing-guide.md — what to test, what not to test, stack-specific guidance
 
+### NMM conventions
+
+- docs/CLAUDE.md — NMM agent conventions; references the functional spec and build plan
+- docs/architecture-patterns.md — outbox, projections, event consumers, multi-tenancy, JWT, OpenAPI-as-export
+- docs/cross-api-events.md — publish/consume, routing keys, schema versioning, nmm-events / nmm-event-contracts
+- docs/harness-conventions.md — the `python manage.py harness` integration pattern
+- docs/openapi-export.md — OpenAPI as an exported, CI-gated artefact
+- docs/frontends.md — the Vite SPA scaffold and contract-driven client generation
+- docs/nmm-ui.md — the default component library
+- docs/native-ui.md — the second component-library option
+
 ## Environment Setup
 
 PostgreSQL must be running locally. The test database uses credentials `test:test` on `localhost:5432/base_app_test`. Do not waste time recreating it if it already exists.
