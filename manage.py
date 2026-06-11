@@ -44,6 +44,13 @@ def _run_migrations() -> bool:
     return _run(["pipenv", "run", "alembic", "upgrade", "head"], "Running migrations")
 
 
+def _export_openapi() -> bool:
+    return _run(
+        ["pipenv", "run", "python", "-m", "scripts.export_openapi"],
+        "Exporting OpenAPI document",
+    )
+
+
 def _build_css() -> bool:
     return _run(["npm", "run", "build:css"], "Building CSS")
 
@@ -55,6 +62,8 @@ def _install_wizard() -> bool:
 def _run_steps() -> bool:
     """Run the common setup steps. Returns False if any step fails."""
     if not _install_deps():
+        return False
+    if not _export_openapi():
         return False
     if not _run_migrations():
         return False

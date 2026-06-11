@@ -74,39 +74,43 @@ class TestRun:
 
 
 class TestCmdSetup:
+    @patch("manage._export_openapi", return_value=True)
     @patch("manage._install_wizard", return_value=True)
     @patch("manage._build_css", return_value=True)
     @patch("manage._run_migrations", return_value=True)
     @patch("manage._create_databases")
     @patch("manage._install_deps", return_value=True)
-    def test_runs_all_steps(self, deps, db, migrate, css, wizard):
+    def test_runs_all_steps(self, deps, db, migrate, css, wizard, export):
         args = build_parser().parse_args(["setup"])
         cmd_setup(args)
 
         db.assert_called_once_with("base_app")
         deps.assert_called_once()
+        export.assert_called_once()
         migrate.assert_called_once()
         css.assert_called_once()
         wizard.assert_called_once()
 
+    @patch("manage._export_openapi", return_value=True)
     @patch("manage._install_wizard", return_value=True)
     @patch("manage._build_css", return_value=True)
     @patch("manage._run_migrations", return_value=True)
     @patch("manage._create_databases")
     @patch("manage._install_deps", return_value=False)
-    def test_exits_on_deps_failure(self, deps, db, migrate, css, wizard):
+    def test_exits_on_deps_failure(self, deps, db, migrate, css, wizard, export):
         args = build_parser().parse_args(["setup"])
         with pytest.raises(SystemExit) as exc:
             cmd_setup(args)
         assert exc.value.code == 1
         migrate.assert_not_called()
 
+    @patch("manage._export_openapi", return_value=True)
     @patch("manage._install_wizard", return_value=True)
     @patch("manage._build_css", return_value=True)
     @patch("manage._run_migrations", return_value=False)
     @patch("manage._create_databases")
     @patch("manage._install_deps", return_value=True)
-    def test_exits_on_migration_failure(self, deps, db, migrate, css, wizard):
+    def test_exits_on_migration_failure(self, deps, db, migrate, css, wizard, export):
         args = build_parser().parse_args(["setup"])
         with pytest.raises(SystemExit) as exc:
             cmd_setup(args)
@@ -115,12 +119,13 @@ class TestCmdSetup:
 
 
 class TestCmdInit:
+    @patch("manage._export_openapi", return_value=True)
     @patch("manage._install_wizard", return_value=True)
     @patch("manage._build_css", return_value=True)
     @patch("manage._run_migrations", return_value=True)
     @patch("manage._install_deps", return_value=True)
     @patch("manage.init_project")
-    def test_runs_all_steps(self, mock_ip, deps, migrate, css, wizard):
+    def test_runs_all_steps(self, mock_ip, deps, migrate, css, wizard, export):
         mock_ip.validate_name.return_value = None
         mock_ip.rename_project.return_value = {"snake": "my_app", "display": "My App"}
 
@@ -132,16 +137,18 @@ class TestCmdInit:
         mock_ip.reset_docs.assert_called_once()
         mock_ip.create_databases.assert_called_once_with("my_app")
         deps.assert_called_once()
+        export.assert_called_once()
         migrate.assert_called_once()
         css.assert_called_once()
         wizard.assert_called_once()
 
+    @patch("manage._export_openapi", return_value=True)
     @patch("manage._install_wizard", return_value=True)
     @patch("manage._build_css", return_value=True)
     @patch("manage._run_migrations", return_value=True)
     @patch("manage._install_deps", return_value=True)
     @patch("manage.init_project")
-    def test_no_db_skips_database_creation(self, mock_ip, deps, migrate, css, wizard):
+    def test_no_db_skips_database_creation(self, mock_ip, deps, migrate, css, wizard, export):
         mock_ip.validate_name.return_value = None
         mock_ip.rename_project.return_value = {"snake": "my_app", "display": "My App"}
 
@@ -150,12 +157,13 @@ class TestCmdInit:
 
         mock_ip.create_databases.assert_not_called()
 
+    @patch("manage._export_openapi", return_value=True)
     @patch("manage._install_wizard", return_value=True)
     @patch("manage._build_css", return_value=True)
     @patch("manage._run_migrations", return_value=True)
     @patch("manage._install_deps", return_value=False)
     @patch("manage.init_project")
-    def test_exits_on_step_failure(self, mock_ip, deps, migrate, css, wizard):
+    def test_exits_on_step_failure(self, mock_ip, deps, migrate, css, wizard, export):
         mock_ip.validate_name.return_value = None
         mock_ip.rename_project.return_value = {"snake": "my_app", "display": "My App"}
 

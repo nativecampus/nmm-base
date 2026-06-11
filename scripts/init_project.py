@@ -19,7 +19,7 @@ _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPLACEMENTS: list[tuple[str, list[tuple[str, str]]]] = [
     ("app/config.py", [("Base App", "display"), ("base_app", "snake")]),
     ("app/worker.py", [("base-app", "kebab")]),
-    (".env.example", [("base_app", "snake")]),
+    (".env.example", [("base_app", "snake"), ("base-app", "kebab")]),
     ("Procfile", [("base-app", "kebab")]),
     ("alembic.ini", [("base_app", "snake")]),
     ("pytest.ini", [("base_app", "snake")]),
@@ -33,6 +33,10 @@ REPLACEMENTS: list[tuple[str, list[tuple[str, str]]]] = [
     ("package.json", [("base_app", "snake")]),
     ("manage.py", [("base_app", "snake")]),
     ("tests/test_manage.py", [("base_app", "snake")]),
+    ("scripts/export_openapi.py", [("base-app", "kebab")]),
+    ("frontends/_template/package.json", [("base-app", "kebab")]),
+    ("frontends/_template/index.html", [("base-app", "kebab")]),
+    ("frontends/_template/src/App.tsx", [("base-app", "kebab")]),
 ]
 
 
@@ -120,6 +124,21 @@ See `docs/` for architecture, coding standards, and testing guidance.
             f.write("\n".join(result))
 
 
+def relocate_openapi_baseline(names: dict[str, str]) -> None:
+    """Rename the template's committed OpenAPI baseline to the new project's filename.
+
+    Without this a derived repo carries a stale base-app.openapi.json that the
+    gate never checks. The renamed file is regenerated with correct content once
+    dependencies are installed (manage.py runs the export during setup).
+    """
+    old = os.path.join(_REPO_ROOT, "base-app.openapi.json")
+    new = os.path.join(_REPO_ROOT, f"{names['kebab']}.openapi.json")
+    if old == new or not os.path.isfile(old):
+        return
+    os.replace(old, new)
+    print(f"  base-app.openapi.json -> {names['kebab']}.openapi.json")
+
+
 def rename_project(name: str) -> dict[str, str]:
     """Rename all base_app references throughout the codebase. Returns derived names."""
     names = derive_names(name)
@@ -133,6 +152,8 @@ def rename_project(name: str) -> dict[str, str]:
             continue
         apply_replacements(filepath, repls, names)
         print(f"  {relpath}")
+
+    relocate_openapi_baseline(names)
 
     return names
 
@@ -168,8 +189,9 @@ def run(name: str) -> None:
     print()
     print("Done. Next steps:")
     print(f"  1. pipenv install --dev")
-    print(f"  2. pipenv run alembic upgrade head")
-    print(f"  3. Add your models, then: pipenv run alembic revision --autogenerate -m 'initial tables'")
+    print(f"  2. pipenv run python -m scripts.export_openapi   # regenerate {names['kebab']}.openapi.json")
+    print(f"  3. pipenv run alembic upgrade head")
+    print(f"  4. Add your models, then: pipenv run alembic revision --autogenerate -m 'initial tables'")
 
 
 def main():
