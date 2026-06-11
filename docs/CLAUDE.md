@@ -70,5 +70,5 @@ See `docs/harness-conventions.md` for the pattern carried forward from `nmm`.
 
 Each SPA is a Vite app under `frontends/` generating its client from the repo's
 OpenAPI document, mocked with Prism during development. The default component
-library is `native-ui` (`docs/native-ui.md`); `nmm-ui` is the per-project
-alternative (`docs/nmm-ui.md`). See `docs/frontends.md`.
+library is `nmm-ui` (`docs/nmm-ui.md`); `native-ui` is the per-project
+alternative (`docs/native-ui.md`). See `docs/frontends.md`.

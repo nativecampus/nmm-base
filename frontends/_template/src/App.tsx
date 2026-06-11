@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NativeProvider, Container, Typography } from "native-ui";
+import { NmmProvider, Card, StatusPill } from "nmm-ui";
 
 export default function App() {
   const [status, setStatus] = useState<string>("loading...");
@@ -14,11 +14,12 @@ export default function App() {
   }, []);
 
   return (
-    <NativeProvider>
-      <Container sx={{ py: 4 }}>
-        <Typography variant="h1">base-app frontend</Typography>
-        <Typography variant="body1">{status}</Typography>
-      </Container>
-    </NativeProvider>
+    <NmmProvider>
+      <Card pad={24}>
+        <h1>base-app frontend</h1>
+        <StatusPill status="in-progress" />
+        <p>{status}</p>
+      </Card>
+    </NmmProvider>
   );
 }

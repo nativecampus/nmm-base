@@ -30,18 +30,18 @@ _template/
 ├── index.html
 └── src/
     ├── main.tsx                  React entry point
-    ├── App.tsx                   example app wrapped in NativeProvider, calls the API
-    ├── native-ui-theme-example.tsx  white-label theme reference (default library)
-    ├── nmm-ui-theme-example.tsx     white-label theme reference (nmm-ui option)
+    ├── App.tsx                   example app wrapped in NmmProvider, calls the API
+    ├── nmm-ui-theme-example.tsx     white-label theme reference (default library)
+    ├── native-ui-theme-example.tsx  white-label theme reference (native-ui option)
     └── api/                      generated client types land here (types.ts, gitignored)
 ```
 
 ## Component library
 
-The template is pre-wired with `native-ui` (the default) — `App.tsx` wraps the
-app in `NativeProvider`. SPAs compose `native-ui`'s exports rather than inventing
-their own primitives. `nmm-ui` is the per-project alternative. See
-`docs/native-ui.md` and `docs/nmm-ui.md`.
+The template is pre-wired with `nmm-ui` (the default) — `App.tsx` wraps the app
+in `NmmProvider`. SPAs compose `nmm-ui`'s exports rather than inventing their own
+primitives. `native-ui` is the per-project alternative. See `docs/nmm-ui.md` and
+`docs/native-ui.md`.
 
 ## Scripts
 

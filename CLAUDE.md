@@ -17,8 +17,8 @@
 - docs/harness-conventions.md — the `python manage.py harness` integration pattern
 - docs/openapi-export.md — OpenAPI as an exported, CI-gated artefact
 - docs/frontends.md — the Vite SPA scaffold and contract-driven client generation
-- docs/native-ui.md — the default component library
-- docs/nmm-ui.md — the second component-library option
+- docs/nmm-ui.md — the default component library
+- docs/native-ui.md — the second component-library option
 
 ## Environment Setup
 
