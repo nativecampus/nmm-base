@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { NativeProvider, Container, Typography } from "native-ui";
 
 export default function App() {
   const [status, setStatus] = useState<string>("loading...");
@@ -13,9 +14,11 @@ export default function App() {
   }, []);
 
   return (
-    <main>
-      <h1>base-app frontend</h1>
-      <p>{status}</p>
-    </main>
+    <NativeProvider>
+      <Container sx={{ py: 4 }}>
+        <Typography variant="h1">base-app frontend</Typography>
+        <Typography variant="body1">{status}</Typography>
+      </Container>
+    </NativeProvider>
   );
 }

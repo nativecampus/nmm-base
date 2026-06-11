@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="nativecampus/base_app_v1"
+REPO="nativecampus/nmm-base"
 
 usage() {
     echo "Usage: curl -sL https://raw.githubusercontent.com/$REPO/main/install.sh | bash -s <project_name>"
-    echo "  project_name: snake_case (e.g. email_reviewer, brace_scraper)"
+    echo "  project_name: snake_case (e.g. nmm_su_mm, nmm_advertiser)"
     exit 1
 }
 
@@ -17,8 +17,8 @@ if ! [[ "$name" =~ ^[a-z][a-z0-9_]*$ ]]; then
     exit 1
 fi
 
-if [ "$name" = "base_app" ]; then
-    echo "Error: pick a real name, not 'base_app'"
+if [ "$name" = "nmm_base" ]; then
+    echo "Error: pick a real name, not 'nmm_base'"
     exit 1
 fi
 
@@ -27,26 +27,27 @@ if [ -d "$name" ]; then
     exit 1
 fi
 
-for cmd in git python3 pipenv npm createdb; do
+for cmd in git python3 npm; do
     if ! command -v "$cmd" &>/dev/null; then
         echo "Error: $cmd is required but not found"
         exit 1
     fi
 done
 
-echo "Creating $name..."
+echo "Creating $name from $REPO..."
 
 git clone --quiet "git@github.com:$REPO.git" "$name"
 cd "$name"
 rm -rf .git install.sh
 git init --quiet
 
-python3 manage.py init "$name"
+python3 -m scripts.init_project "$name"
 
 git add -A
-git commit --quiet -m "Initial commit from base_app template"
+git commit --quiet -m "Initial commit from nmm-base template"
 
 echo ""
 echo "Ready. Next steps:"
 echo "  cd $name"
+echo "  python manage.py setup"
 echo "  python manage.py dev"

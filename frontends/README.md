@@ -24,15 +24,24 @@ Set the `name` field in `package.json` to match the directory.
 
 ```
 _template/
-├── package.json        vite + react + typescript + openapi-typescript + prism
-├── vite.config.ts      dev server, proxies /api to the Prism mock on :4010
+├── package.json                  vite + react + typescript + openapi-typescript + prism + native-ui
+├── vite.config.ts                dev server, proxies /api to the Prism mock on :4010
 ├── tsconfig.json
 ├── index.html
 └── src/
-    ├── main.tsx        React entry point
-    ├── App.tsx         example component that calls the API
-    └── api/            generated client types land here (types.ts, gitignored)
+    ├── main.tsx                  React entry point
+    ├── App.tsx                   example app wrapped in NativeProvider, calls the API
+    ├── native-ui-theme-example.tsx  white-label theme reference (default library)
+    ├── nmm-ui-theme-example.tsx     white-label theme reference (nmm-ui option)
+    └── api/                      generated client types land here (types.ts, gitignored)
 ```
+
+## Component library
+
+The template is pre-wired with `native-ui` (the default) — `App.tsx` wraps the
+app in `NativeProvider`. SPAs compose `native-ui`'s exports rather than inventing
+their own primitives. `nmm-ui` is the per-project alternative. See
+`docs/native-ui.md` and `docs/nmm-ui.md`.
 
 ## Scripts
 

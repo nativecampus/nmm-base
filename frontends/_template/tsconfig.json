@@ -16,5 +16,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/native-ui-theme-example.tsx", "src/nmm-ui-theme-example.tsx"]
 }
