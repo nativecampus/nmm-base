@@ -29,6 +29,7 @@ def _run(cmd: list[str] | str, label: str, shell: bool = False) -> bool:
 
 
 def _install_deps() -> bool:
+    """Install Python and npm dependencies. Returns True on success."""
     return (
         _run(["pipenv", "install", "--dev"], "Installing Python dependencies")
         and _run(["npm", "install"], "Installing npm dependencies")
@@ -36,15 +37,18 @@ def _install_deps() -> bool:
 
 
 def _create_databases(db_name: str) -> None:
+    """Create the main and test databases for the given project name."""
     print("\n→ Creating databases")
     init_project.create_databases(db_name)
 
 
 def _run_migrations() -> bool:
+    """Apply Alembic migrations up to head. Returns True on success."""
     return _run(["pipenv", "run", "alembic", "upgrade", "head"], "Running migrations")
 
 
 def _export_openapi() -> bool:
+    """Generate the committed OpenAPI document. Returns True on success."""
     return _run(
         ["pipenv", "run", "python", "-m", "scripts.export_openapi"],
         "Exporting OpenAPI document",
@@ -52,10 +56,12 @@ def _export_openapi() -> bool:
 
 
 def _build_css() -> bool:
+    """Compile the Tailwind stylesheet. Returns True on success."""
     return _run(["npm", "run", "build:css"], "Building CSS")
 
 
 def _install_wizard() -> bool:
+    """Install the Claude wizard skill. Returns True on success."""
     return _run(WIZARD_INSTALL, "Installing wizard skill", shell=True)
 
 
@@ -111,6 +117,7 @@ def cmd_dev(_args: argparse.Namespace) -> None:
     )
 
     def _cleanup(signum, frame):
+        """Terminate the CSS watcher and exit when a stop signal is received."""
         css.terminate()
         sys.exit(0)
 
@@ -129,6 +136,7 @@ def cmd_dev(_args: argparse.Namespace) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """Build the argument parser for the management CLI."""
     parser = argparse.ArgumentParser(
         prog="manage.py",
         description="Project management CLI for base_app.",
@@ -147,6 +155,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Parse arguments and dispatch to the selected command."""
     parser = build_parser()
     args = parser.parse_args(argv)
 

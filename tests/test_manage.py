@@ -74,6 +74,8 @@ class TestRun:
 
 
 class TestCmdSetup:
+    """Tests for the setup command."""
+
     @patch("manage._export_openapi", return_value=True)
     @patch("manage._install_wizard", return_value=True)
     @patch("manage._build_css", return_value=True)
@@ -81,6 +83,7 @@ class TestCmdSetup:
     @patch("manage._create_databases")
     @patch("manage._install_deps", return_value=True)
     def test_runs_all_steps(self, deps, db, migrate, css, wizard, export):
+        """Setup runs every step, including the OpenAPI export, in order."""
         args = build_parser().parse_args(["setup"])
         cmd_setup(args)
 
@@ -98,6 +101,7 @@ class TestCmdSetup:
     @patch("manage._create_databases")
     @patch("manage._install_deps", return_value=False)
     def test_exits_on_deps_failure(self, deps, db, migrate, css, wizard, export):
+        """Setup exits before migrations when dependency install fails."""
         args = build_parser().parse_args(["setup"])
         with pytest.raises(SystemExit) as exc:
             cmd_setup(args)
@@ -111,6 +115,7 @@ class TestCmdSetup:
     @patch("manage._create_databases")
     @patch("manage._install_deps", return_value=True)
     def test_exits_on_migration_failure(self, deps, db, migrate, css, wizard, export):
+        """Setup exits before building CSS when migrations fail."""
         args = build_parser().parse_args(["setup"])
         with pytest.raises(SystemExit) as exc:
             cmd_setup(args)
@@ -119,6 +124,8 @@ class TestCmdSetup:
 
 
 class TestCmdInit:
+    """Tests for the init command."""
+
     @patch("manage._export_openapi", return_value=True)
     @patch("manage._install_wizard", return_value=True)
     @patch("manage._build_css", return_value=True)
@@ -126,6 +133,7 @@ class TestCmdInit:
     @patch("manage._install_deps", return_value=True)
     @patch("manage.init_project")
     def test_runs_all_steps(self, mock_ip, deps, migrate, css, wizard, export):
+        """Init renames the project and runs every setup step, including the export."""
         mock_ip.validate_name.return_value = None
         mock_ip.rename_project.return_value = {"snake": "my_app", "display": "My App"}
 
@@ -149,6 +157,7 @@ class TestCmdInit:
     @patch("manage._install_deps", return_value=True)
     @patch("manage.init_project")
     def test_no_db_skips_database_creation(self, mock_ip, deps, migrate, css, wizard, export):
+        """The --no-db flag skips database creation during init."""
         mock_ip.validate_name.return_value = None
         mock_ip.rename_project.return_value = {"snake": "my_app", "display": "My App"}
 
@@ -164,6 +173,7 @@ class TestCmdInit:
     @patch("manage._install_deps", return_value=False)
     @patch("manage.init_project")
     def test_exits_on_step_failure(self, mock_ip, deps, migrate, css, wizard, export):
+        """Init exits with code 1 when a setup step fails."""
         mock_ip.validate_name.return_value = None
         mock_ip.rename_project.return_value = {"snake": "my_app", "display": "My App"}
 

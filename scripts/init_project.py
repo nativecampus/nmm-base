@@ -175,6 +175,7 @@ def create_databases(db_name: str, test_user: str = "test") -> None:
 
 
 def run(name: str) -> None:
+    """Rename the project, reset docs, optionally create databases, and print next steps."""
     names = rename_project(name)
     reset_docs(_REPO_ROOT, names)
 
@@ -195,6 +196,7 @@ def run(name: str) -> None:
 
 
 def main():
+    """Validate the command-line project name and run initialisation."""
     if len(sys.argv) != 2:
         print("Usage: python -m scripts.init_project <project_name>")
         print("  project_name: snake_case (e.g. email_reviewer)")

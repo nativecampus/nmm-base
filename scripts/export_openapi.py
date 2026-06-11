@@ -43,6 +43,11 @@ def render(import_path: str) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Render the OpenAPI document and write it, or verify it under --check.
+
+    Returns a process exit code: 0 on success or a passing check, 1 when the
+    committed file is missing or stale.
+    """
     parser = argparse.ArgumentParser(prog="export_openapi")
     parser.add_argument(
         "--check",
