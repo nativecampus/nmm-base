@@ -51,3 +51,8 @@ jobs:
           AUTH_ENABLED: "FALSE"
           CURRENT_USER: test
           REDIS_URL: ""
+
+      # The OpenAPI export imports the FastAPI app but does no database work at
+      # import time, so this gate needs only the installed Python dependencies.
+      - name: Check OpenAPI document is up to date
+        run: pipenv run python -m scripts.export_openapi --check
