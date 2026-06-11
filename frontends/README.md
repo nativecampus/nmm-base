@@ -24,7 +24,7 @@ Set the `name` field in `package.json` to match the directory.
 
 ```
 _template/
-├── package.json                  vite + react + typescript + openapi-typescript + prism + native-ui
+├── package.json                  vite + react + typescript + openapi-typescript + prism + nmm-ui
 ├── vite.config.ts                dev server, proxies /api to the Prism mock on :4010
 ├── tsconfig.json
 ├── index.html
